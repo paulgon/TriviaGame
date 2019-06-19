@@ -78,10 +78,10 @@ function stopInterval() {
     clearInterval(interval2);
     index++;
     if (index >= questions.length) {
-        quand.html("<h2> You answered .... out of 4 correctly! </h2>")
-        console.log("stop");
+        console.log('losses: ' + losses);
+        quand.html("<h1>You answered" +" "+ wins +" "+ "correctly!</h1>")
     } else{
-        console.log("adk new question:"+index)
+        console.log("idk new question:"+index)
         question(index);
     }
 }
