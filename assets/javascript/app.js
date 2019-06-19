@@ -1,14 +1,16 @@
 var quand = $('.card');
+var timer = 30;
 var wins = 0;
 var losses = 0;
-var timer = 30;
 var index = 0;
 var interval = '';
+var clock = 10;
+var score= 0;
 var questions = [
     {
         question: 'How large is the Milky Way?',
-        correctAnswer: "100, 000 light years in diameter",
-        sandBoxofAnswers: ["100,000 light years in diameter.", "50,000 light years in diameter.", "60,000 light years in diameter."]
+        correctAnswer: "100,000 light years in diameter",
+        sandBoxofAnswers: ["100,000 light years in diameter", "50,000 light years in diameter", "60,000 light years in diameter"]
     },
     {
         question: 'How Many stars are in the Milky Way?',
@@ -27,10 +29,9 @@ var questions = [
     }
 ];
 
-
 function question(index) {
     quand.empty();
-
+   
     //create title for each question should be inside of an h1
     var title = $('<h1>');
     title.text(questions[index].question);
@@ -47,21 +48,43 @@ function question(index) {
         btn.text(sandBoxofAnswers[i]);
         quand.append(btn);
     }
+
+    startTimer()
 }
 
-var clock = 10;
-question(index);
-var interval2 = setInterval(function () {
-    clock--;
-    console.log(clock);
-    if (clock === 5) {
-        stopInterval();
-    }
-}, 2000)
+function startTimer() {
+    clock = 5;
+    $("#timeRemaining").html(clock);
+    interval2 = setInterval(function () {
+        clock--;
+        console.log(clock);
+        $("#timeRemaining").html(clock);
+        if (clock === 0) {
+            losses++;
+            $("#loss").text(losses);
+            stopInterval(interval2);
+        }
+    }, 1000)
+
+}
+
+function startGame() {
+    index= 0;
+    question(index);
+    $("#timeRemaining").html(clock);
+}
+
 function stopInterval() {
-    clearInterval(interval2)
+    clearInterval(interval2);
+    index++;
+    if (index >= questions.length) {
+        quand.html("<h2> You answered .... out of 4 correctly! </h2>")
+        console.log("stop");
+    } else{
+        console.log("adk new question:"+index)
+        question(index);
+    }
 }
-
 
 $(document).on('click', '.btn', function () {
     var correctAnswer = $(this).attr('data-correctAnswer');
@@ -75,4 +98,11 @@ $(document).on('click', '.btn', function () {
         $("#loss").text(losses);
         console.log('losses: ' + losses);
     }
+
+    stopInterval();
+    
 });
+
+
+
+startGame();
